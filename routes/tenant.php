@@ -26,4 +26,10 @@ Route::middleware([
     Route::get('/', function () {
         return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
     });
+
+    Route::get('/single-tenant', function () {
+        // return "I am from  this id contains " .tenant('id'). "  Tenant";
+        return view('demo');
+    });
+
 });
