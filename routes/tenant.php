@@ -6,30 +6,42 @@ use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
-/*
-|--------------------------------------------------------------------------
-| Tenant Routes
-|--------------------------------------------------------------------------
-|
-| Here you can register the tenant routes for your application.
-| These routes are loaded by the TenantRouteServiceProvider.
-|
-| Feel free to customize them however you want. Good luck!
-|
-*/
-
 Route::middleware([
     'web',
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
+
+// Each Tenants will have different interface using their individual domains
+
+Route::domain('test.localhost')->group(function(){
+
+    Route::get('/dashboard', function(){
+        return "Test Tenant Dashboard";
+    });
+
     Route::get('/', function () {
         return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
     });
 
     Route::get('/single-tenant', function () {
-        // return "I am from  this id contains " .tenant('id'). "  Tenant";
+        echo "I am from  this id contains " .tenant('id'). "  Tenant";
         return view('demo');
     });
+
+});
+
+Route::domain('mimi.localhost')->group(function(){
+
+    Route::get('/dashboard', function(){
+        return "Mimi Tenant Dashboard";
+    });
+
+    Route::get('/', function () {
+        return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
+    });
+
+});
+    
 
 });

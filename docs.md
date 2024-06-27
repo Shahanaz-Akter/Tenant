@@ -1,4 +1,5 @@
 <!-- node version 18 and php version 8.1 here -->
+
 First of all you have to craete one project using this command "composer create-project laravel/laravel project-name"
 step-1 laravel new tenancy (installed a tenancy named object in root file)
 step-2 installed all of the possible packages about tenants
@@ -60,7 +61,7 @@ use Stancl\Tenancy\Database\Models\Domain;
 use App\Models\Tenant;
 'tenant_model' => Tenant::class,
 
-step_12 php artisan migrate:fresh (if need)
+step_12 php artisan migrate:fresh --seed (if need)
 step-13 php artisan tinker
 step-14 $tenant = App\Models\Tenant::create()
 
@@ -74,22 +75,29 @@ tenancy_db_name: "tenant2b99fc5d-3807-431a-a869-30324d96c5b0",
 "
 step- 15 write this command like $tenant->domains()->create(['domain' => 'test.localhost']);
 ;
-step-16 App\Providers\RouteServiceProvider   have to use this code
+step-16 App\Providers\RouteServiceProvider have to use this code
 
-  $this->routes(function () {
-            Route::middleware('api')
-                ->prefix('api')
-                ->domain('localhost')
-                ->group(base_path('routes/api.php'));
+$this->routes(function () {
+Route::middleware('api')
+->prefix('api')
+->domain('localhost')
+->group(base_path('routes/api.php'));
 
             Route::middleware('web')
                  ->domain('localhost')
                 ->group(base_path('routes/web.php'));
         });
 
-
-step-17 tenancy>config>tenancy.php
-
+step-17: tenancy>config>tenancy.php
+step-18: each tenants route will be declared into routes>tennat.php using their domain middleware group
+step-19: each tenants controller and view will be created by using another folder into comntroller and View folder like conmtroller>Tenant>Tenantcontroller>or
+View>Tennat>register.blade.php like this way.
+step-20: Super admin will manage overall tenants system and his own manage as usual. He has power for doing all of this pproject. like suing tennacy-register route
+he can register each tenannt customly I have created it.
+step-20: Now i will Create Each tenants databases table where each tables will be stored into database>migrations>tenant folder.
+Each Database and their table will be placed there after migration files.
+step-21: migration creating ---> php artisan make:migration create_users_table --path=database/migrations/tenant
+step-22: migartion commands for all tenants users table: php artisan tenants:migrate
 
 <!-- install nvm pacakeg into your device. using terminal write following comnmands ->
 

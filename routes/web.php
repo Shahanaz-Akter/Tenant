@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Tenant\TenancyRegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/Super-admin', function () {
+    return "Super Admin Route";
+});
 
 Route::get('/', function () {
     return view('welcome');
@@ -27,5 +32,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+
+// Super Admin can register each tenant using this route
+Route::get('/tenancy-register', [TenancyRegisterController::class, 'tenancyRegister'])->middleware(['auth', 'verified'])->name('tenancy-register');
+Route::post('/post-register', [TenancyRegisterController::class, 'postRegister'])->middleware(['auth', 'verified'])->name('post-register');
 
 require __DIR__.'/auth.php';
